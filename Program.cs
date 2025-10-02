@@ -1,69 +1,59 @@
 ﻿namespace Diaryapplication;
 
-class DiaryEntry
-    {
-    public DateTime Date { get; set; }
-    public string Content { get; set; }
-    
-    public override string ToString()
-    {
-        return $"{Date:yyyy-MM-dd HH:MM} - {Content}";
-    }
-}
-
 class Program
 {
-    static List<DiaryEntry> diaryEntries = new List<DiaryEntry>();
-    const string filePath = "diary.txt";
-
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
+        DiaryChoices diary = new DiaryChoices();
+        DiaryMenu(diary);
+    }
+
+        public static void DiaryMenu(DiaryChoices diary)
+        {   
+            int inputMenuChoice;
+
         while (true)
         {
-            Console.WriteLine("Dagboksappen");
+            Console.WriteLine("Axels Dagboksapplikation\n");
             Console.WriteLine("1. Lägg till en anteckning");
             Console.WriteLine("2. Lista anteckningar ");
-            Console.WriteLine("3. Uppdatera anteckning");
-            Console.WriteLine("4. Sök anteckning");
-            Console.WriteLine("5. Ta bort anteckning");
-            Console.WriteLine("6. Spara anteckning till fil");
-            Console.WriteLine("7. Ladda upp anteckning från fil");
-            Console.WriteLine("8. Avsluta");
+            Console.WriteLine("3. Sök anteckning");
+            Console.WriteLine("4. Spara anteckning till fil");
+            Console.WriteLine("5. Ladda upp anteckning från fil");
+            Console.WriteLine("6. Avsluta");
             Console.Write("Välj ett val: ");
 
-            string? choice = Console.ReadLine();
+            inputMenuChoice = nullValidating.GetInt();
 
-            switch (choice)
+            switch (inputMenuChoice)
             {
-                case "1":
-                    NewEntry();
+                case 1:
+                    diary.AddEntry();
                     break;
-                case "2":
-                    ListEntries();
+                case 2:
+                    diary.ListEntries();
                     break;
-                case "3":
-                    UpdateEntries();
+                case 3:
+                    diary.LoadEntries();
+                    diary.SearchByDate();
                     break;
-                case "4":
-                    SearchEntries();
+                case 4:
+                    diary.SaveEntries();           
+                    EntryDisplay.PostEntry();
                     break;
-                case "5":
-                    DeleteEntry();
-                    return;
-                case "6":
-                    SaveToFile();
-                    return;
-                case "7":
-                    LoadFromFile();
-                    return;
-                case "8":
+                case 5:
+                    diary.LoadEntries();
+                    Console.WriteLine("Anteckningar laddade från fil.");
+                    EntryDisplay.PostEntry();
+                    break;
+                case 6:
                     Console.WriteLine("Avslutar programmet.");
                     return;
                 default:
-                    Console.WriteLine("Invalid option. Please try again.");
+                    Console.WriteLine("Felaktigt val, vänligen försök igen!");
+                    EntryDisplay.PostEntry();
                     break;
             }
         }
     }
-}
 }
